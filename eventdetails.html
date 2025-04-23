@@ -178,6 +178,9 @@
 </header>
 
 <main>
+    <br>
+    <a href="index.html">Back to home page</a><br>
+    <br>
     <section id="aboutus" class="py-5" style="background-color:darksalmon;color:black">
         <h2>Event</h2>
         <div style="text-align: center;">
@@ -316,60 +319,55 @@
             <button class="btn btn-primary mt-2 submit-feedback-btn" data-event="tech">Submit Feedback</button>
         </div>
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-            const submitButtons = document.querySelectorAll('.submit-feedback-btn');
-    
-            submitButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const card = this.closest('.card');
-                    const ratingContainer = card.querySelector('.rating-container');
-                    const ratingError = ratingContainer.querySelector('.error-message');
-                    const feedbackTextarea = card.querySelector('textarea');
-                    const feedbackError = card.querySelector('.feedback-section .error-message:last-child');
-                    const ratingInputs = ratingContainer.querySelectorAll('input[type="radio"]');
-                    let selectedRating = null;
-                    ratingInputs.forEach(input => {
-                        if (input.checked) {
-                            selectedRating = input.value;
+            document.addEventListener('DOMContentLoaded', function () {
+                const submitButtons = document.querySelectorAll('.submit-feedback-btn');
+            
+                submitButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const feedbackSection = this.closest('.feedback-section');
+                        const ratingContainer = feedbackSection.querySelector('.rating-container');
+                        const ratingError = feedbackSection.querySelector('#rating-error-tech');
+                        const feedbackTextarea = feedbackSection.querySelector('textarea');
+                        const feedbackError = feedbackSection.querySelector('#feedback-error-tech');
+                        const ratingInputs = feedbackSection.querySelectorAll('input[type="radio"]');
+                        let selectedRating = null;
+            
+                        ratingInputs.forEach(input => {
+                            if (input.checked) {
+                                selectedRating = input.value;
+                            }
+                        });
+            
+                        const feedbackText = feedbackTextarea.value.trim();
+                        let isValid = true;
+            
+                        // Clear previous errors
+                        ratingError.textContent = '';
+                        feedbackError.textContent = '';
+            
+                        if (!selectedRating) {
+                            ratingError.textContent = 'Please select a rating.';
+                            isValid = false;
+                        }
+            
+                        if (!feedbackText) {
+                            feedbackError.textContent = 'Please enter your feedback.';
+                            isValid = false;
+                        }
+            
+                        if (isValid) {
+                            console.log('Feedback submitted:', selectedRating, feedbackText);
+            
+                            // Reset the form
+                            ratingInputs.forEach(input => input.checked = false);
+                            feedbackTextarea.value = '';
+                            alert('Thank you for your feedback!');
                         }
                     });
-    
-                    const feedbackText = feedbackTextarea.value.trim();
-                    let isValid = true;
-    
-                    ratingError.textContent = '';
-                    feedbackError.textContent = '';
-    
-                    if (!selectedRating) {
-                        ratingError.textContent = 'Please select a rating.';
-                        isValid = false;
-                    }
-    
-                    if (!feedbackText) {
-                        feedbackError.textContent = 'Please enter your feedback.';
-                        isValid = false;
-                    }
-    
-                    if (isValid) {
-                        const eventType = this.dataset.event;
-                        console.log(`Feedback submitted for: ${eventType}`);
-                        console.log('Rating:', selectedRating);
-                        console.log('Feedback:', feedbackText);
-    
-                        // Here you would typically send this data to your server
-                        // using an AJAX request (e.g., fetch or XMLHttpRequest).
-    
-                        // For demonstration purposes, let's clear the feedback area after "submission"
-                        ratingInputs.forEach(input => {
-                            input.checked = false;
-                        });
-                        feedbackTextarea.value = '';
-                        alert('Thank you for your feedback!');
-                    }
                 });
             });
-        });
-        </script>
+            </script>
+            
     </section>
 <br><br>
 </main>
