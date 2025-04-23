@@ -301,16 +301,75 @@
     <section id="feedback" class="py-5" style="background-color: darksalmon">
         <div class="feedback-section">
             <h6>Post-Event Feedback</h6>
-            <div class="rating">
-                <input type="radio" id="star5-tech" name="rating-tech" value="5" /><label for="star5-tech"></label>
-                <input type="radio" id="star4-tech" name="rating-tech" value="4" /><label for="star4-tech"></label>
-                <input type="radio" id="star3-tech" name="rating-tech" value="3" /><label for="star3-tech"></label>
-                <input type="radio" id="star2-tech" name="rating-tech" value="2" /><label for="star2-tech"></label>
-                <input type="radio" id="star1-tech" name="rating-tech" value="1" /><label for="star1-tech"></label>
+            <div class="rating-container">
+                <div class="rating">
+                    <input type="radio" id="star5-tech" name="rating-tech" value="5" /><label for="star5-tech"></label>
+                    <input type="radio" id="star4-tech" name="rating-tech" value="4" /><label for="star4-tech"></label>
+                    <input type="radio" id="star3-tech" name="rating-tech" value="3" /><label for="star3-tech"></label>
+                    <input type="radio" id="star2-tech" name="rating-tech" value="2" /><label for="star2-tech"></label>
+                    <input type="radio" id="star1-tech" name="rating-tech" value="1" /><label for="star1-tech"></label>
+                </div>
+                <div class="error-message" id="rating-error-tech" style="color: red;"></div>
             </div>
-            <textarea class="form-control" placeholder="Your feedback"></textarea>
-            <a href="valuablefeedback.html"><button class="btn btn-primary mt-2">Submit Feedback</button></a>
+            <textarea class="form-control" placeholder="Your feedback" name="feedbackTextTech"></textarea>
+            <div class="error-message" id="feedback-error-tech" style="color: red;"></div>
+            <button class="btn btn-primary mt-2 submit-feedback-btn" data-event="tech">Submit Feedback</button>
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            const submitButtons = document.querySelectorAll('.submit-feedback-btn');
+    
+            submitButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.card');
+                    const ratingContainer = card.querySelector('.rating-container');
+                    const ratingError = ratingContainer.querySelector('.error-message');
+                    const feedbackTextarea = card.querySelector('textarea');
+                    const feedbackError = card.querySelector('.feedback-section .error-message:last-child');
+                    const ratingInputs = ratingContainer.querySelectorAll('input[type="radio"]');
+                    let selectedRating = null;
+                    ratingInputs.forEach(input => {
+                        if (input.checked) {
+                            selectedRating = input.value;
+                        }
+                    });
+    
+                    const feedbackText = feedbackTextarea.value.trim();
+                    let isValid = true;
+    
+                    ratingError.textContent = '';
+                    feedbackError.textContent = '';
+    
+                    if (!selectedRating) {
+                        ratingError.textContent = 'Please select a rating.';
+                        isValid = false;
+                    }
+    
+                    if (!feedbackText) {
+                        feedbackError.textContent = 'Please enter your feedback.';
+                        isValid = false;
+                    }
+    
+                    if (isValid) {
+                        const eventType = this.dataset.event;
+                        console.log(`Feedback submitted for: ${eventType}`);
+                        console.log('Rating:', selectedRating);
+                        console.log('Feedback:', feedbackText);
+    
+                        // Here you would typically send this data to your server
+                        // using an AJAX request (e.g., fetch or XMLHttpRequest).
+    
+                        // For demonstration purposes, let's clear the feedback area after "submission"
+                        ratingInputs.forEach(input => {
+                            input.checked = false;
+                        });
+                        feedbackTextarea.value = '';
+                        alert('Thank you for your feedback!');
+                    }
+                });
+            });
+        });
+        </script>
     </section>
 <br><br>
 </main>

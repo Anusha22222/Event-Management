@@ -52,7 +52,8 @@
         .error-message {
             color: red;
             font-size: 14px;
-            margin-top: 5px;
+            margin-top: -10px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -60,39 +61,53 @@
     <a href="index.html" style="color:#d32f2f; margin-left:20px; font-weight: bold;">Back to home page</a>
     <div class="reset-container">
         <h2>Reset Your Password</h2>
-        <form id="RegForm" name="RegForm" action="sign-in.html">
+        <form id="RegForm">
             <div class="form-group">
-                <label for="password">New Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your new password" required>
-                <span id="password-error" class="error-message"></span>
+                <label for="new-password">New Password</label>
+                <input type="password" class="form-control" id="new-password" name="new-password" placeholder="Enter your new password" required>
+                <span id="new-password-error" class="error-message"></span>
             </div>
             <div class="form-group">
-                <label for="password">Confirm Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your new password again" required>
-                <span id="password-error" class="error-message"></span>
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Confirm your new password" required>
+                <span id="confirm-password-error" class="error-message"></span>
             </div>
-            <button>Submit</button>
+            <button type="submit">Submit</button>
         </form>
 
         <div class="back-to-login">
             <p><a href="sign-in.html">Back to Sign In</a></p>
         </div>
     </div>
+
     <script>
         document.getElementById("RegForm").addEventListener("submit", function(event) {
-            const pass = document.getElementById("password").value;
-            const passErr = document.getElementById("password-error"); 
-            passErr.textContent = "";
-            
-            let isValid = true;
-            if (pass === "" || pass.length < 6) {
-                passErr.textContent = "Please enter a password with at least 6 characters.";
-                isValid = false;
-            }
-            if (!isValid) {
-                event.preventDefault(); // Prevent form submission if validation fails.
+            event.preventDefault(); // Prevent form from submitting
+
+            const newPassword = document.getElementById("new-password").value;
+            const confirmPassword = document.getElementById("confirm-password").value;
+            const newPassError = document.getElementById("new-password-error");
+            const confirmPassError = document.getElementById("confirm-password-error");
+
+            newPassError.textContent = "";
+            confirmPassError.textContent = "";
+
+            let valid = true;
+
+            if (newPassword.length < 6) {
+                newPassError.textContent = "Password must be at least 6 characters.";
+                valid = false;
             }
 
+            if (newPassword !== confirmPassword) {
+                confirmPassError.textContent = "Passwords do not match.";
+                valid = false;
+            }
+
+            if (valid) {
+                alert("Password reset successful!");
+                window.location.href = "sign-in.html";
+            }
         });
     </script>
 
